@@ -229,13 +229,13 @@ network_monitor/
 
 ## Network Statistics (Auto-Updated)
 
-**Last Updated:** <!-- AUTO_UPDATE_TIMESTAMP -->2025-11-03T19:19:36.573480<!-- /AUTO_UPDATE_TIMESTAMP -->
+**Last Updated:** <!-- AUTO_UPDATE_TIMESTAMP -->2025-11-03T19:25:30.157636<!-- /AUTO_UPDATE_TIMESTAMP -->
 
-**Average Speed (24h):** <!-- AUTO_UPDATE_SPEED -->0.0 Mbps down / 0.0 Mbps up<!-- /AUTO_UPDATE_SPEED -->
+**Average Speed (24h):** <!-- AUTO_UPDATE_SPEED -->0.4 Mbps down / 0.0 Mbps up<!-- /AUTO_UPDATE_SPEED -->
 
-**Total Data Used:** <!-- AUTO_UPDATE_DATA -->0.00 GB<!-- /AUTO_UPDATE_DATA -->
+**Total Data Used:** <!-- AUTO_UPDATE_DATA -->17.81 GB<!-- /AUTO_UPDATE_DATA -->
 
-**Network Uptime:** <!-- AUTO_UPDATE_UPTIME -->Insufficient data<!-- /AUTO_UPDATE_UPTIME -->
+**Network Uptime:** <!-- AUTO_UPDATE_UPTIME -->1m (24h window)<!-- /AUTO_UPDATE_UPTIME -->
 
 **Connected Devices:** <!-- AUTO_UPDATE_DEVICES -->0 active<!-- /AUTO_UPDATE_DEVICES -->
 
