@@ -1,269 +1,325 @@
-# Network Monitor Dashboard
+# NetScope v1.0.0
 
-A cross-platform desktop application built with Python and Flask that displays real-time network statistics including upload/download speeds, ping latency, connected devices, active ports, and historical data visualizations. Features automatic GitHub synchronization and packages as a standalone Windows executable.
+**Professional-grade Python desktop application for real-time network and system performance monitoring**
 
-## Tech Stack
+![NetScope](https://img.shields.io/badge/version-1.0.0-blue)
+![Python](https://img.shields.io/badge/python-3.11+-green)
+![License](https://img.shields.io/badge/license-MIT-orange)
 
-- **Backend:** Python 3.12+, Flask, psutil, speedtest-cli
-- **Frontend:** HTML, CSS, Chart.js
-- **Database:** SQLite
-- **Packaging:** PyInstaller
+NetScope is a modern, dark-themed desktop application built with PyQt5 that provides comprehensive real-time monitoring of network adapters, system resources, and performance metrics. The application features live graph visualizations, historical data logging, and export capabilities.
+
+## Features
+
+### Network Monitoring
+- ✅ **Automatic adapter detection** - Detects and monitors all active network adapters
+- ✅ **Real-time speed tracking** - Upload/download speeds with live updates
+- ✅ **Ping latency monitoring** - Continuous latency measurement
+- ✅ **Data usage tracking** - Bytes sent/received with session totals
+- ✅ **Public IP information** - IP, ISP name, and approximate location
+- ✅ **Network adapter listing** - Shows all active interfaces
+
+### System Monitoring
+- ✅ **CPU usage** - Real-time CPU percentage with progress bars
+- ✅ **RAM usage** - Memory consumption with detailed statistics
+- ✅ **Disk usage** - Storage utilization tracking
+- ✅ **System uptime** - Continuous uptime display
+
+### Visualization & Analytics
+- ✅ **Real-time graphs** - Live network speed and CPU usage graphs
+- ✅ **Adjustable time windows** - 30s, 5m, 10m, 30m, 1h, 24h views
+- ✅ **Adjustable refresh rates** - 1s, 3s, 5s update intervals
+- ✅ **Smooth animations** - PyQtGraph-powered visualizations
+
+### Data Management
+- ✅ **SQLite database** - Automatic historical data storage
+- ✅ **CSV export** - Export all statistics to CSV format
+- ✅ **JSON export** - Export all statistics to JSON format
+- ✅ **Event logging** - System events logged automatically
+
+### Speed Testing
+- ✅ **Manual speed tests** - On-demand bandwidth testing
+- ✅ **Automatic testing** - Periodic speed tests (every 5 minutes)
+- ✅ **Results storage** - Speed test history saved to database
+
+### User Interface
+- ✅ **Dark theme** - Minimalist dark mode interface
+- ✅ **Tabbed layout** - Overview, Graphs, Logs & Exports tabs
+- ✅ **System tray support** - Minimize to system tray
+- ✅ **Terminal-style logs** - Console output for application events
+- ✅ **Resizable window** - Adaptive UI elements
+
+## Screenshots
+
+*Note: Screenshots will be added after first build and testing*
+
+### Overview Tab
+- Network statistics panel
+- System statistics panel
+- Public IP information
+- Speed test controls
+
+### Graphs Tab
+- Real-time network speed graph (Download/Upload)
+- CPU usage graph
+- Time window selector
+- Refresh rate controls
+
+### Logs & Exports Tab
+- Application log console
+- CSV export button
+- JSON export button
 
 ## Installation
 
-**For End Users:** Download the pre-built executable from Releases (no Python installation required).
+### For End Users (Windows)
 
-**For Developers:**
+1. Download `NetScope.exe` from the Releases section
+2. Run the executable (no installation required)
+3. The application will create a `data/` directory for database storage
 
-1. Clone the repository
-2. Create virtual environment: `python -m venv venv`
-3. Activate virtual environment:
-   - Windows: `venv\Scripts\activate`
-   - Linux/Mac: `source venv/bin/activate`
-4. Install dependencies: `pip install -r requirements.txt`
-5. Copy `.env.example` to `.env` and configure GitHub credentials
-6. (Optional) Configure GitHub auto-sync: Copy `.env.example` to `.env` and fill in Git credentials
-7. (Optional) Initialize Git repository: `git init` and add remote: `git remote add origin <your-repo-url>`
-8. Run the application: `python app.py`
+**Note:** The executable is a standalone file - no Python installation required.
+
+### For Developers
+
+#### Prerequisites
+- Python 3.11 or higher
+- pip (Python package manager)
+
+#### Setup Steps
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd netscope
+   ```
+
+2. **Create virtual environment (recommended):**
+   ```bash
+   python -m venv venv
+   ```
+   
+   **Windows:**
+   ```bash
+   venv\Scripts\activate
+   ```
+   
+   **Linux/Mac:**
+   ```bash
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Run the application:**
+   ```bash
+   python main.py
+   ```
 
 ## Building Standalone Executable
 
 ### Prerequisites
-
-- Python 3.12+
+- Python 3.11+
 - All dependencies installed (`pip install -r requirements.txt`)
-- PyInstaller is included in requirements.txt
-- Recommended: Test the application in development mode first (`python app.py`)
+- PyInstaller (included in requirements.txt)
 
-### Build Command
+### Build Process
 
-**Using the spec file (recommended):**
-
-```bash
-pyinstaller NetworkMonitor.spec
-```
-
-**Alternative one-line command (if spec file doesn't exist):**
+#### Method 1: Using PyInstaller directly
 
 **Windows:**
 ```bash
-pyinstaller --onefile --noconsole --name NetworkMonitor --add-data "templates;templates" --add-data "static;static" --hidden-import engineio.async_drivers.eventlet --hidden-import dns.resolver app.py
+pyinstaller --onefile --noconsole --name NetScope --icon=netscope/assets/icons/app_icon.ico --add-data "data;data" netscope/main.py
 ```
 
 **Linux/Mac:**
 ```bash
-pyinstaller --onefile --name NetworkMonitor --add-data "templates:templates" --add-data "static:static" --hidden-import engineio.async_drivers.eventlet --hidden-import dns.resolver app.py
+pyinstaller --onefile --name NetScope --icon=netscope/assets/icons/app_icon.ico --add-data "data:data" netscope/main.py
 ```
 
-Note: Windows uses semicolon (`;`), Linux/Mac uses colon (`:`) in `--add-data`.
+#### Method 2: Using the spec file (recommended)
 
-**Important:** The `--noconsole` flag is Windows/macOS specific and not applicable on Linux. Linux builds will always be console binaries.
-
-Build process takes 2-5 minutes depending on your system.
-
-### Build Scripts
-
-**Windows:** Double-click `build_exe.bat` or run from command prompt:
-```bash
-build_exe.bat
-```
-
-**Linux/Mac:** Make executable and run:
-```bash
-chmod +x build_exe.sh
-./build_exe.sh
-```
+1. Create or use the provided `NetScope.spec` file
+2. Build:
+   ```bash
+   pyinstaller NetScope.spec
+   ```
 
 ### Output Location
-
-- **Executable:** `dist/NetworkMonitor.exe` (Windows) or `dist/NetworkMonitor` (Linux/Mac)
+- **Executable:** `dist/NetScope.exe` (Windows) or `dist/NetScope` (Linux/Mac)
 - **Build artifacts:** `build/` directory (can be deleted after successful build)
-- **Spec file:** `NetworkMonitor.spec` (keep for future builds)
 
-### First Run Setup
+### Build Configuration
 
-**What happens on first run:**
-- Executable creates `data/` directory automatically
-- Database (`network_logs.db`) is initialized with schema
-- Browser opens automatically to `http://localhost:5000/`
-- Application runs in background (no console window)
+The executable will:
+- Run as a single-file executable
+- Include all dependencies
+- Create `data/` directory automatically on first run
+- Initialize SQLite database automatically
+- Display version number in title bar (NetScope v1.0.0)
 
-**Note:** First run may take 3-5 seconds due to extraction (one-file mode).
+## Usage
 
-### Distribution
+### Starting the Application
 
-- **Single file distribution:** Just copy `NetworkMonitor.exe` to target machine
-- **No Python installation required** on target machine
-- **No additional dependencies needed**
-- **Executable size:** Approximately 40-60 MB (includes Python runtime and all dependencies)
-- **Optional:** Include `.env.example` for users who want GitHub sync
+1. Launch `NetScope.exe` (or run `python main.py` from source)
+2. The application will automatically:
+   - Detect active network adapters
+   - Start monitoring network and system stats
+   - Fetch public IP information
+   - Begin logging data to SQLite database
 
-### Troubleshooting
+### Using the Interface
 
-#### Issue: Executable won't start or crashes immediately
+#### Overview Tab
+- View real-time network statistics
+- Monitor system resources (CPU, RAM, Disk)
+- See public IP and ISP information
+- Run manual speed tests
 
-**Solution:**
-- Build with `console=True` in spec file to see error messages
-- Run from command prompt to see output: `NetworkMonitor.exe`
-- Check Windows Defender or antivirus (may flag PyInstaller executables)
+#### Graphs Tab
+- Select time window from dropdown (30s to 24h)
+- Adjust refresh rate (1s, 3s, 5s)
+- View live network speed and CPU usage graphs
 
-#### Issue: "Failed to execute script" error
+#### Logs & Exports Tab
+- View application event logs
+- Export data to CSV or JSON format
+- Clear log display
 
-**Solution:**
-- Missing hidden imports - check spec file hiddenimports list
-- Rebuild with `--debug all` flag for detailed logs
-- Common missing imports: eventlet, dns, engineio
+### Speed Testing
 
-#### Issue: Templates or static files not found (404 errors)
+- **Manual Test:** Click "Run Speed Test" button in Overview tab
+- **Automatic Tests:** Run automatically every 5 minutes when app is active
+- Results are saved to database and displayed in the UI
 
-**Solution:**
-- Verify `datas` parameter in spec file includes templates and static
-- Check that paths use correct separator (`;` for Windows, `:` for Linux/Mac)
-- Rebuild and test
+### Exporting Data
 
-#### Issue: Database not persisting between runs
-
-**Solution:**
-- Verify `config.py` uses `get_base_path()` for DATABASE_PATH
-- Check that database is created in executable's directory, not temp folder
-- Look for `data/` directory next to the .exe file
-
-#### Issue: Port 5000 already in use
-
-**Solution:**
-- Change port in `.env` file: `FLASK_PORT=5001`
-- Or kill process using port 5000: `netstat -ano | findstr :5000` then `taskkill /PID <pid> /F`
-
-#### Issue: Slow startup (3-5 seconds)
-
-**Explanation:** Normal for `--onefile` mode (extraction to temp directory)
-
-**Solution:**
-- Use `--onedir` mode for faster startup (creates folder instead of single file)
-- Trade-off: Faster startup vs. single-file convenience
-
-#### Issue: Antivirus flags executable as malware
-
-**Explanation:** PyInstaller executables sometimes trigger false positives
-
-**Solution:**
-- Add exception in antivirus software
-- Alternative: Code-sign the executable (requires certificate)
-- Submit to antivirus vendors for whitelisting
-
-### Advanced Build Options
-
-#### Debug build (with console window)
-
-Edit `NetworkMonitor.spec`, change `console=False` to `console=True`, then rebuild:
-```bash
-pyinstaller NetworkMonitor.spec
-```
-
-Use for troubleshooting startup issues.
-
-#### Smaller executable (disable UPX compression)
-
-Edit spec file, change `upx=True` to `upx=False`. Results in larger file but faster build and fewer compatibility issues.
-
-#### One-folder distribution (faster startup)
-
-Edit spec file:
-- Uncomment COLLECT block
-- Comment out or modify EXE block's one-file configuration
-
-Results in `dist/NetworkMonitor/` folder with multiple files. Distribute entire folder, run `NetworkMonitor.exe` inside.
-
-#### Custom icon
-
-1. Create or obtain `app_icon.ico` file (256x256 recommended)
-2. Place in `static/icons/` directory
-3. Edit spec file, add `icon='static/icons/app_icon.ico'` to EXE block
-4. Rebuild
-
-### Clean Build
-
-Remove old build artifacts before rebuilding:
-
-**Windows:**
-```bash
-rmdir /s /q build dist
-pyinstaller --clean NetworkMonitor.spec
-```
-
-**Linux/Mac:**
-```bash
-rm -rf build dist
-pyinstaller --clean NetworkMonitor.spec
-```
-
-Recommended when changing spec file or dependencies.
-
-## Features
-
-- Real-time network monitoring with live graphs
-- Connected devices scanner
-- Speed test and port scanner tools
-- Dark/light theme toggle
-- Automatic GitHub synchronization (optional) - Requires Git credentials in .env file
-- Exportable statistics to CSV
-- Standalone executable - no Python installation required
-- Auto-opens browser on startup
-- Portable - runs from any directory
+1. Navigate to "Logs & Exports" tab
+2. Click "Export to CSV" or "Export to JSON"
+3. Choose save location
+4. All historical data will be exported
 
 ## Project Structure
 
 ```
-network_monitor/
-├── templates/          # HTML template files
-├── static/             # Static assets
-│   ├── css/            # Stylesheets
-│   ├── js/             # JavaScript files
-│   └── icons/          # Icon assets
-├── data/               # SQLite database and exports
-├── utils/              # Utility modules
-├── config.py           # Configuration settings
-├── requirements.txt    # Python dependencies
-└── README.md           # Project documentation
+NetScope/
+│
+├── netscope/
+│   ├── __init__.py
+│   ├── main.py                 # Main entry point
+│   ├── ui/
+│   │   ├── main_window.py     # Main UI window
+│   │   └── resources/
+│   ├── core/
+│   │   ├── network_monitor.py # Network monitoring
+│   │   ├── system_monitor.py  # System monitoring
+│   │   └── data_manager.py    # Database operations
+│   ├── utils/
+│   │   ├── logger.py          # Logging system
+│   │   └── speed_test.py      # Speed test functionality
+│   └── assets/
+│       └── icons/
+│
+├── data/                       # SQLite database (created automatically)
+│   └── netscope.db
+│
+├── build/                      # Build output directory
+├── dist/                       # Executable output
+│
+├── requirements.txt            # Python dependencies
+├── README.md                   # This file
+├── LICENSE                     # MIT License
+└── changelog.md                # Version history
 ```
 
-## Network Statistics (Auto-Updated)
+## Technical Details
 
-**Last Updated:** <!-- AUTO_UPDATE_TIMESTAMP -->2025-11-03T19:25:30.157636<!-- /AUTO_UPDATE_TIMESTAMP -->
+### Tech Stack
+- **GUI Framework:** PyQt5 5.15.10
+- **System Monitoring:** psutil 5.9.6
+- **Speed Testing:** speedtest-cli 2.1.3
+- **Graph Visualization:** pyqtgraph 0.13.3
+- **HTTP Requests:** requests 2.31.0
+- **Database:** SQLite3 (built-in)
+- **Packaging:** PyInstaller 6.3.0
 
-**Average Speed (24h):** <!-- AUTO_UPDATE_SPEED -->0.4 Mbps down / 0.0 Mbps up<!-- /AUTO_UPDATE_SPEED -->
+### Data Storage
+- SQLite database located in `data/netscope.db`
+- Automatic schema creation on first run
+- Indexed tables for efficient queries
+- Stores network stats, system stats, speed tests, and events
 
-**Total Data Used:** <!-- AUTO_UPDATE_DATA -->17.81 GB<!-- /AUTO_UPDATE_DATA -->
+### API Usage
+- **IP Information:** Uses ipinfo.io API (free tier, no key required)
+- **Fallback:** Uses ipify.org for basic IP lookup if ipinfo fails
 
-**Network Uptime:** <!-- AUTO_UPDATE_UPTIME -->1m (24h window)<!-- /AUTO_UPDATE_UPTIME -->
+## Configuration
 
-**Connected Devices:** <!-- AUTO_UPDATE_DEVICES -->0 active<!-- /AUTO_UPDATE_DEVICES -->
+### Default Settings
+- **Refresh Rate:** 1 second
+- **Time Window:** 5 minutes
+- **Speed Test Interval:** 5 minutes (automatic)
+- **Max Logs:** 1000 entries
 
-*Automatically updated by GitHub Auto-Sync every 15 minutes*
+These can be adjusted via the UI controls in the Graphs tab.
 
-## GitHub Auto-Sync
+## Troubleshooting
 
-This application can automatically commit network statistics to GitHub:
+### Issue: Application won't start
+- **Solution:** Ensure Python 3.11+ is installed and all dependencies are installed
+- Check that PyQt5 is properly installed: `pip install PyQt5`
 
-- Syncs `data/network_logs.db` every 15 minutes (configurable)
-- Updates README.md with latest statistics
-- Requires Git credentials in `.env` file
-- Enable/disable in Settings page
+### Issue: No network adapters detected
+- **Solution:** Ensure network adapters are active and have IPv4 addresses
+- Check that psutil has proper permissions to access network interfaces
 
-**Setup:**
-1. Copy `.env.example` to `.env`
-2. Fill in Git credentials (name, email, remote URL, token)
-3. Initialize Git repository: `git init`
-4. Add remote: `git remote add origin <your-repo-url>`
-5. Enable sync in Settings page
+### Issue: Speed test fails
+- **Solution:** Check internet connection
+- Ensure speedtest-cli is installed: `pip install speedtest-cli`
+- Some networks may block speed test servers
+
+### Issue: Database errors
+- **Solution:** Ensure write permissions in the application directory
+- Check that `data/` directory can be created
+
+### Issue: Graphs not updating
+- **Solution:** Check that time window is set correctly
+- Ensure refresh rate is not too high (try 1 second)
+- Verify that monitoring is active (check Overview tab)
+
+## Version History
+
+See [CHANGELOG.md](changelog.md) for detailed version history.
+
+### Current Version: 1.0.0
+- Initial release
+- Core monitoring features
+- Dark theme UI
+- Real-time graphs
+- Export functionality
 
 ## License
 
-MIT License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-**Note:** The "Network Statistics (Auto-Updated)" section is automatically updated by the application. Manual edits will be overwritten.
+### Future Enhancements (Planned)
+- v1.0.1: Optimized speed test + export fixes
+- v1.0.2: Enhanced tray icon + better graph scaling
+- v1.1.0: Plugin system for extra data modules
 
+## Support
+
+For issues, questions, or feature requests, please open an issue on the GitHub repository.
+
+---
+
+**NetScope v1.0.0** - Professional Network and System Performance Monitor
+
+*Built with Python, PyQt5, and ❤️*
